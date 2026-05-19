@@ -10,10 +10,10 @@ app = Flask(__name__)
 
 # DB Configurations from .env
 SOURCE_DB_CONFIG = {
-    'host': os.getenv('SOURCE_DB_HOST', 'localhost'),
-    'user': os.getenv('SOURCE_DB_USER', 'root'),
-    'password': os.getenv('SOURCE_DB_PASS', '1234'),
-    'database': os.getenv('SOURCE_DB_NAME', 'unsafe_product'),
+    'host': os.getenv('SOURCE_DB_HOST'),
+    'user': os.getenv('SOURCE_DB_USER'),
+    'password': os.getenv('SOURCE_DB_PASS'),
+    'database': os.getenv('SOURCE_DB_NAME'),
     'port': int(os.getenv('SOURCE_DB_PORT', 3307))
 }
 
