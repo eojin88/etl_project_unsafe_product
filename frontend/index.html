@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB ETL Manager</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #007bff;
+            --accent-hover: #0056b3;
+            --border-color: #333;
+            --log-bg: #111;
+            --log-text: #00ff00;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 20px; background-color: var(--bg-color); color: var(--text-color); }
+        .container { max-width: 900px; margin: auto; background: var(--container-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
+        h1 { color: #fff; text-align: center; margin-bottom: 30px; }
+        .section { margin-bottom: 30px; padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; background: rgba(255, 255, 255, 0.02); }
+        .section h2 { margin-top: 0; font-size: 1.2rem; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; background-color: var(--accent-color); color: white; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: var(--accent-hover); }
+        button:disabled { background-color: #444; color: #888; cursor: not-allowed; }
+        select, input[type="time"] { 
+            padding: 10px; 
+            border-radius: 4px; 
+            border: 1px solid #444; 
+            background: #2c2c2c; 
+            color: #fff; 
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input[type="time"]:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        /* Style for the clock/calendar icon in modern browsers */
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(1); /* Make the icon white */
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        input[type="time"]::-webkit-calendar-picker-indicator:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        #log-container { background: var(--log-bg); color: var(--log-text); padding: 15px; height: 200px; overflow-y: scroll; font-family: 'Courier New', Courier, monospace; border-radius: 4px; margin-top: 10px; font-size: 0.9rem; border: 1px solid var(--border-color); }
+        .progress-bar { height: 12px; background-color: #333; border-radius: 6px; overflow: hidden; margin-top: 15px; }
+        #progress-inner { height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, #5cb85c); transition: width 0.3s ease; }
+        .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
+        .summary-item { background: #252525; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent-color); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .summary-item span { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 5px; }
+        .summary-item strong { font-size: 1.1rem; color: #fff; }
+        label { font-size: 0.9rem; color: #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DB ETL Manager</h1>
+
+        <!-- ETL Execution Section -->
+        <div class="section">
+            <h2>Start Migration</h2>
+            <div class="controls">
+                <select id="etl-mode">
+                    <option value="batch">Batch (Full Sync)</option>
+                    <option value="realtime">Real-time (Incremental Sync)</option>
+                </select>
+                <button id="btn-start">Start ETL</button>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-inner"></div>
+            </div>
+            <div id="log-container">
+                <div>Waiting for execution...</div>
+            </div>
+        </div>
+
+        <!-- Scheduling Section -->
+        <div class="section">
+            <h2>Batch Scheduling</h2>
+            <div class="controls">
+                <label for="schedule-time">Daily at:</label>
+                <input type="time" id="schedule-time" value="00:00">
+                <button id="btn-save-schedule">Save Schedule</button>
+                <button id="btn-cancel-schedule" style="background-color: #dc3545;">Cancel Schedule</button>
+            </div>
+        </div>
+
+        <!-- Result Summary Section -->
+        <div class="section">
+            <h2>Migration Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span>Last Status</span>
+                    <strong id="summary-status">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Migrated Count</span>
+                    <strong id="summary-count">0</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Last Sync Time</span>
+                    <strong id="summary-time">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Error Message</span>
+                    <strong id="summary-error">None</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

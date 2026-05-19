@@ -1,0 +1,29 @@
+# --- Java (Spring) ---
+backend-spring/target/
+backend-spring/.settings/
+backend-spring/.project
+backend-spring/.classpath
+*.class
+*.war
+# Do not commit properties with passwords
+backend-spring/src/main/resources/db.properties
+
+# --- Python ---
+etl-python/__pycache__/
+etl-python/.venv/
+etl-python/*.pyc
+# Do not commit environment variables
+etl-python/.env
+
+# --- Node.js ---
+gateway-node/node_modules/
+gateway-node/npm-debug.log*
+gateway-node/package-lock.json
+# Do not commit environment variables
+gateway-node/.env
+
+# --- IDE (VS Code, IntelliJ) ---
+.idea/
+.vscode/
+*.iml
+.DS_Store
